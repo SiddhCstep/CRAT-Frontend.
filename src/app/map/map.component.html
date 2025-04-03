@@ -1,0 +1,740 @@
+<div class="headerContener">
+
+
+
+    <div class="historicalFutureselection">
+
+        <div class="dropdown" [class.active]="isOpen" (click)="toggleDropdown()">
+            <button class="dropdown-toggle">
+                {{ selectedOptionofsector?.sector_name }} <span style="margin-left: 95px;"><img
+                        src="../../assets/image/arrow-down-sign-to-navigate.png" alt="" style="width: 15px;"></span>
+            </button>
+            <div class="dropdown-menu" *ngIf="isOpen">
+                <div class="dropdown-item" *ngFor="let option of optionsofeffectedfield" (click)="selectOption(option)">
+                    {{ option.sector_name }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="mainheader">
+        <!-- <div class="logoimage">
+            <img src="../../assets/image/icon.png" alt="" width="50px">
+        </div> -->
+        <div class="logocontener" routerLink="">
+            <h2>CRAT</h2>
+            <p>Climate Risk Assessment Tool</p>
+            <i class="collaborativetext">A collaborative effort of Puducherry Climate Change Cell and CSTEP</i>
+        </div>
+
+
+
+
+        <div class="headercntent">
+
+
+
+            <div class="dropdown">
+                <button class="dropdown-heading">Selected Indicators</button>
+                <div class="dropdown-content">
+                    <ul>
+
+                        <li><strong>Hazard</strong></li>
+                        <ul>
+                            <li style="margin-left: 20px;"><strong>{{typeOfHazard}}</strong></li>
+                        </ul>
+
+                        <ul>
+                            <li *ngFor="let item of hazard" style="margin-left: 20px;">
+                                {{ item }}
+                                <span *ngIf="item === 'Flood'">
+                                    <i>({{floodSlidervaluetoshownonselectedindicator}}yr.)</i>
+
+
+                                </span>
+                            </li>
+                        </ul>
+
+
+                        <!-- Exposure Section -->
+                        <li><strong>Exposure</strong></li>
+                        <ul>
+                            <li *ngFor="let exp of exposure" style="margin-left: 20px;">
+                                {{ exp.indicator_name }}
+                                <ul *ngIf="exp.sub_indicators.length > 0">
+                                    <i>
+                                        <li *ngFor="let sub of exp.sub_indicators">{{ sub }}</li>
+                                    </i>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <!-- Vulnerability Section -->
+                        <li><strong>Vulnerability</strong></li>
+                        <ul>
+                            <!-- Adaptive Capacity Subsection -->
+                            <li style="margin-left: 15px;"><strong>Adaptive Capacity</strong></li>
+                            <ul>
+                                <li *ngFor="let adaptive of vulnerabilityAdaptive" style="margin-left: 23px;">{{
+                                    adaptive.indicator_name }}</li>
+                            </ul>
+
+                            <!-- Sensitivity Subsection -->
+                            <li style="margin-left: 15px;"><strong>Sensitivity</strong></li>
+                            <ul>
+                                <li *ngFor="let sensitivity of vulnerabilitySensitivity" style="margin-left: 20px;">{{
+                                    sensitivity.indicator_name }}</li>
+                            </ul>
+                        </ul>
+                    </ul>
+                </div>
+            </div>
+
+            <div (click)="printMap()" style="margin-left: 20px;">
+                <img src="../../assets/image/printer.png" width="20px" alt="" srcset="">
+            </div>
+
+
+
+            <div class="user-container">
+                <img src="../../assets/image/user.png" alt="User Icon" width="20px" class="usericon"
+                    (click)="togglePopup()">
+                <div class="popup" *ngIf="isPopupVisible">
+                    <p>Hi, {{UserName}}</p>
+                    <button (click)="changePassword()">Change Password</button>
+                    <button (click)="logout()">Logout</button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="bodyContaner">
+    <div class="menucontaner">
+        <div class="menucontanerbox">
+            <div>
+
+
+                <div [formGroup]="radioForm" class="radio-inputs">
+                    <label *ngFor="let option of optionsoftime" class="radio" style="position: relative;">
+                        <input type="radio" formControlName="selectedOption" [value]="option.value"
+                            (change)="onSelectionChange(option.value)">
+                        <span class="name">
+                            {{ option.label }}
+                        </span>
+
+                        <!-- Tooltip -->
+                        <div *ngIf="option.value === 'Future'" class="custom-tooltip" [innerHTML]="futureTooltip">
+                        </div>
+                    </label>
+                </div>
+
+
+                <hr>
+
+
+
+                <div class="hazards Button" (click)="toggleHazardsContent()">
+                    Hazard <span><img src="../../assets/image/arrow-down-sign.png" alt="" width="15px"></span>
+                </div>
+
+
+                <div *ngIf="isHazardsContentVisible" class="hazardsContent">
+
+
+                    <div [formGroup]="radioFormhazardtogel" class="custom-radio-group">
+                        <div>
+                            <label *ngFor="let option of optionsofhazardtogel" class="custom-radio">
+                                <input type="radio" formControlName="selectedOption" [value]="option.value"
+                                    (change)="onSelectionChangehazardtogel(option.value)">
+                                <span>{{ option.label }}</span>
+                            </label>
+                        </div>
+                    </div>
+
+
+                    <div [formGroup]="radioForm">
+                        <label *ngFor="let option of hazardoptions" class="hazardsContentindi"
+                            style="position: relative;">
+                            <input type="radio" formControlName="selectedOption" [value]="option.value"
+                                (change)="onSelectionChangeHazards(option.value)" />
+                            <span class="radio-circle"></span>
+                            <span class="radio-label">{{ option.label }}</span>
+
+                            <!-- Tooltip -->
+                            <div class="custom-tooltip" [innerHTML]="option.tooltip"></div>
+                        </label>
+
+                        <div class="slider-container" *ngIf="floodSubOption">
+                            <div class="slider-wrapper">
+                                <input type="range" min="0" max="5" step="1" [formControl]="sliderControl"
+                                    (input)="onSliderChange($event)" />
+                                <div class="ticks">
+                                    <div *ngFor="let stop of stops" class="tick">{{ stop.label }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <h6>Opacity controller</h6>
+                        <div class="slider-container">
+                            <div class="slider-wrapper">
+                                 <input type="range" id="Opacitycontroler" min="0" [max]="opacityStops.length - 1" step="1"
+                                      [formControl]="sliderControlforopacity" (input)="onSliderChangeforopicty($event)" />
+                                 <div class="ticks">
+                                      <div *ngFor="let stop of opacityStops" class="tick">{{ stop.label }}</div>
+                                 </div>
+                            </div>
+                       </div>
+
+
+
+
+
+                    </div>
+
+
+                </div>
+
+                <div class="Exposure Button" (click)="toggleExposureContent()">
+                    Exposure <span><img src="../../assets/image/arrow-down-sign.png" alt="" width="15px"></span>
+                </div>
+
+
+
+
+
+
+
+
+                <div *ngIf="isExposureContentVisible" class="exposurecontent">
+                    <i *ngIf="PleaseselectsectorExpouser" style="margin-left: 20px; color: red;">
+                        Please select a {{selectionname}}
+                    </i>
+                    <div *ngIf="isexposureoptionvisible">
+
+
+                        <label>
+                            <input type="checkbox" [checked]="isAllSelected" (change)="onSelectAll($event)" />
+                            <span class="custom-checkbox"></span>
+                            <span class="radio-label">
+                                Select All
+                            </span>
+                        </label>
+
+
+
+                        <div *ngFor="let indicator of exposureIndicators">
+                            <!-- Parent Checkbox -->
+                            <label>
+                                <div class="color-box"
+                                    [ngStyle]="{'background-color': getBackgroundColor(indicator.checked, indicator.indicator_name)}">
+                                </div>
+                                <input type="checkbox" [checked]="indicator.checked" [disabled]="indicator.disable"
+                                    (change)="onIndicatorChange(indicator)" />
+                                <span class="custom-checkbox"></span>
+                                <span class="radio-label" [ngClass]="{'disabled-checkbox': indicator.disable}">
+                                    {{ indicator.indicator_name }}
+                                </span>
+                            </label>
+
+                            <!-- Child Checkboxes (Sub-indicators) -->
+                            <div *ngIf="indicator.sub_indicators.length > 0" style="margin-left: 20px;">
+                                <div *ngFor="let subIndicator of indicator.sub_indicators">
+                                    <label>
+                                        <div class="color-box"
+                                            [ngStyle]="{'background-color': getBackgroundColor(subIndicator.checked, subIndicator.sub_indicator_name)}">
+                                        </div>
+                                        <input type="checkbox" [checked]="subIndicator.checked"
+                                            [disabled]="subIndicator.disable"
+                                            (change)="onSubIndicatorChange(indicator, subIndicator)" />
+                                        <span class="custom-checkbox"></span>
+                                        <span class="radio-label"
+                                            [ngClass]="{'disabled-checkbox': subIndicator.disable}">
+                                            {{ subIndicator.sub_indicator_name }}
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                    <hr>
+
+                        <h6>Opacity controller</h6>
+                        <div class="slider-container">
+                            <div class="slider-wrapper">
+
+                                 <input type="range" id="Opacitycontroler" [max]="opacityStops.length - 1" step="1"
+                                      [formControl]="sliderControlForLayerOpacity"
+                                      (input)="onSliderChangeForLayerOpacity($event)" />
+                                 <div class="ticks">
+                                      <div *ngFor="let stop of opacityStops" class="tick">{{ stop.label }}</div>
+                                 </div>
+                            </div>
+                       </div>
+
+                    </div>
+                </div>
+
+
+
+                <div class="Vulnerability Button" (click)="toggleVulnerabilityContent()">
+                    Vulnerability <span><img src="../../assets/image/arrow-down-sign.png" alt="" width="15px"></span>
+                </div>
+
+
+                <div class="scroble" *ngIf="isVulnerabilityContentVisible" class="vulnerbilityclass">
+                    <i *ngIf="Pleaseselectsector" style="margin-left: 20px; color: red;">
+                        Please select a sector
+                    </i>
+
+                    <div *ngIf="valnerbality">
+                        <div [ngClass]="{'hazardsContentindi': true, 'checked-background': logleselectall}"
+                            (click)="selectall()" style="margin-top: 5px;">
+                            <div class="checboxdiv">
+                                <input type="checkbox" [(ngModel)]="logleselectall">
+                                <span class="custom-checkbox"></span>
+                                <span class="radio-label">Select All</span>
+                            </div>
+                        </div>
+
+                        <div class="valnerbalitysubheading">
+                            <h6>{{ vulnerability }}</h6>
+                        </div>
+
+
+
+
+                        <div *ngFor="let item of vulnerabilities"
+                            [ngClass]="{'hazardsContentindi': true, 'checked-background': item.checked}"
+                            (click)="toggleCheck(item)">
+                            <div class="checboxdiv">
+                                <input type="checkbox" [(ngModel)]="item.checked" (change)="result()">
+                                <span class="custom-checkbox"></span>
+
+                                <span class="radio-label" [title]="getTooltip(item.indicator_name)">
+                                    {{ item.indicator_name }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="valnerbalitysubheading">
+                            <h6>{{ vulnerabilitysecond }}</h6>
+                        </div>
+                        <div *ngFor="let item of vulnerabilityseconddata"
+                            [ngClass]="{'hazardsContentindi': true, 'checked-background': item.checked}"
+                            (click)="toggleCheck(item)">
+                            <div class="checboxdiv">
+                                <input type="checkbox" [(ngModel)]="item.checked" (change)="result()">
+                                <span class="custom-checkbox"></span>
+
+                                <span class="radio-label" [title]="getTooltip(item.indicator_name)">
+                                    {{ item.indicator_name }}
+                                </span>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+
+            </div>
+
+
+            
+
+
+
+
+
+            <div class="riskbuttoncontaner">
+                <button class="showriskbutton" (click)="showriskbutton()" [disabled]="isButtonDisabled">
+                    Show Risk
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="mapcontaner">
+
+        <div class="containerofmap">
+            <!-- <div class="row"> -->
+            <div class="box first" [class.expanded]="isExpanded('one')" (dblclick)="expandBox('one')"
+                *ngIf="!expandedBox || expandedBox === 'one'">
+
+                <!-- <div *ngIf="mapscale" style="height: 100%; width: 100%;" leaflet [leafletOptions]="optionsDisone"
+                    (leafletMapReady)="onMapReady($event)">
+                </div> -->
+
+
+                <div style="height: 100%; width: 100%;" leaflet [leafletOptions]="selectedOptions"
+                    (leafletMapReady)="onMapReady($event)">
+                </div>
+
+
+                <button class="close-button" (click)="shrinkBox($event)">&#10006;</button>
+
+                <!-- <div class="districtnamecontaner">
+                    Puducherry
+                </div> -->
+                <div class="districtnamecontaner">
+                    {{ districtName }}
+                </div>
+
+
+                <div class="sticky-div" *ngIf="showlegend">
+                    <div>
+                        <h5>{{ colorlesendtext }}
+                        </h5>
+                    </div>
+                    <div class="droughtbox" *ngIf="droughtBox">
+                        <div class="droughtcolorbox"></div>
+                        <p>Moderate drought</p>
+                    </div>
+                    <div class="heatwaveBox" *ngIf="HeatwaveBOX">
+                        <p *ngIf="nameoflegend">{{nameoflegend}}</p>
+                        <div>
+                            <div class="colorboxContaner">
+                                <div *ngFor="let color of colorBoxes" [style.background-color]="color" class="colorbox">
+                                </div>
+
+                                <p *ngIf="sealeavelrisecomment">{{Sealevelriselegendcomment}}</p>
+
+                            </div>
+                            <div class="colorboxContaner" *ngIf="numberbox">
+                                <div *ngFor="let number of numberBoxes" class="numberBox">{{ number }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="bottom-right-box">
+
+
+                    <!-- <div *ngIf="PoCmmshow">
+                        <div *ngFor="let area of exposurepercentagevaluenewpercentage?.Puducherry | keyvalue">
+                            <div class="exposurepercentageboxrape">
+                                <div class="percentagebox">
+                                    {{ area.value }} mm/day
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div *ngFor="let area of exposurepercentagevaluenew?.Puducherry | keyvalue">
+                        <div class="exposurepercentageboxrape">
+                            <div class="percentageboxcolor" [ngStyle]="{'background-color': getColorjhbjb(area.key)}">
+                            </div>
+                            <div class="percentagebox">
+                                {{ area.value }}%
+                            </div>
+                        </div>
+                    </div> -->
+
+
+                    <div *ngIf="PoCmmshow">
+                        <div *ngFor="let area of exposurepercentagevaluenewpercentage?.[districtName] | keyvalue">
+                            <div class="exposurepercentageboxrape">
+                                <div class="percentagebox">
+                                    {{ area.value }} mm/day
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngFor="let area of exposurepercentagevaluenew?.[districtName] | keyvalue">
+                        <div class="exposurepercentageboxrape">
+                            <div class="percentageboxcolor" [ngStyle]="{'background-color': getColorjhbjb(area.key)}">
+                            </div>
+                            <div class="percentagebox">
+                                {{ area.value }}%
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <!-- <div class="box second" [class.expanded]="isExpanded('two')" (dblclick)="expandBox('two')"
+                        *ngIf="!expandedBox || expandedBox === 'two'">
+                        <div *ngIf="mapscale" style="height: 98%; width: 98%;z-index: 1" leaflet
+                             [leafletOptions]="optionsDistwo" (leafletMapReady)="onMapReadyTwo($event)">
+                        </div>
+                        <button *ngIf="expandedBox === 'two'" class="close-button"
+                             (click)="shrinkBox($event)">&#10006;</button>
+                        <div class="districtnamecontaner">
+                             Karaikal
+                        </div>
+
+                        <div class="bottom-right-box">
+                    
+
+
+                             <div *ngIf="PoCmmshow">
+
+                                  <div *ngFor="let area of exposurepercentagevaluenewpercentage?.Karaikal | keyvalue">
+                                       <div class="exposurepercentageboxrape">
+                                            <div class="percentagebox">
+                                                 {{ area.value }} mm/day
+                                            </div>
+                                       </div>
+                                  </div>
+                             </div>
+
+
+
+               
+
+
+
+                             <div *ngFor="let area of exposurepercentagevaluenew?.Karaikal | keyvalue">
+                                  <div class="exposurepercentageboxrape">
+                                       <div class="percentageboxcolor"
+                                            [ngStyle]="{'background-color': getColorjhbjb(area.key)}">
+                                       </div>
+                                       <div class="percentagebox">
+                                            {{ area.value }}%
+                                       </div>
+                                  </div>
+                             </div>
+                        </div>
+
+
+                        <div class="sticky-div" *ngIf="showlegend">
+                             <div>
+                                  <h5>{{ colorlesendtext }}
+                                  </h5>
+                             </div>
+                             <div class="droughtbox" *ngIf="droughtBox">
+                                  <div class="droughtcolorbox"></div>
+                                  <p>Moderate drought</p>
+                             </div>
+                             <div class="heatwaveBox" *ngIf="HeatwaveBOX">
+                                  <p *ngIf="nameoflegend">{{nameoflegend}}</p>
+                                  <div>
+                                       <div class="colorboxContaner">
+                                            <div *ngFor="let color of colorBoxes" [style.background-color]="color"
+                                                 class="colorbox"></div>
+
+                                            <p *ngIf="sealeavelrisecomment">{{Sealevelriselegendcomment}}</p>
+
+                                       </div>
+                                       <div class="colorboxContaner" *ngIf="numberbox">
+                                            <div *ngFor="let number of numberBoxes" class="numberBox">{{ number }}
+                                            </div>
+                                       </div>
+                                  </div>
+                             </div>
+                        </div>
+                   </div> -->
+            <!-- </div> -->
+
+
+            <!-- <div class="row">
+
+                   <div class="box first" [class.expanded]="isExpanded('three')" (dblclick)="expandBox('three')"
+                        *ngIf="!expandedBox || expandedBox === 'three'">
+                        <div *ngIf="mapscale" style="height: 98%; width: 98%;" leaflet
+                             [leafletOptions]="optionsDisthree" (leafletMapReady)="onMapReadyThree($event)">
+                        </div>
+
+                        <button *ngIf="expandedBox === 'three'" class="close-button"
+                             (click)="shrinkBox($event)">&#10006;</button>
+
+                        <div class="districtnamecontaner">
+                             Yanam
+                        </div>
+
+                     
+                        <div class="bottom-right-box">
+
+                             <div *ngIf="PoCmmshow">
+
+                                  <div *ngFor="let area of exposurepercentagevaluenewpercentage?.Yanam | keyvalue">
+                                       <div class="exposurepercentageboxrape">
+                                            <div class="percentagebox">
+                                                 {{ area.value }} mm/day
+                                            </div>
+                                       </div>
+                                  </div>
+                             </div>
+
+                             <div *ngFor="let area of exposurepercentagevaluenew?.Yanam | keyvalue">
+                                  <div class="exposurepercentageboxrape">
+                                       <div class="percentageboxcolor"
+                                            [ngStyle]="{'background-color': getColorjhbjb(area.key)}">
+                                       </div>
+                                       <div class="percentagebox">
+                                            {{ area.value }}%
+                                       </div>
+                                  </div>
+                             </div>
+
+
+                        </div>
+                   </div>
+
+
+                   <div class="box second" [class.expanded]="isExpanded('four')" (dblclick)="expandBox('four')"
+                        *ngIf="!expandedBox || expandedBox === 'four'">
+                        <div *ngIf="mapscale" style="height: 98%; width: 98%; z-index: 1;" leaflet
+                             [leafletOptions]="optionsDisfour" (leafletMapReady)="onMapReadyFour($event)">
+                        </div>
+                        <button *ngIf="expandedBox === 'four'" class="close-button"
+                             (click)="shrinkBox($event)">&#10006;</button>
+                        <div class="districtnamecontaner">
+                             Mahe
+                        </div>
+
+                        <div class="bottom-right-box">
+
+
+                             <div *ngIf="PoCmmshow">
+
+                                  <div *ngFor="let area of exposurepercentagevaluenewpercentage?.Mahe | keyvalue">
+                                       <div class="exposurepercentageboxrape">
+                                            <div class="percentagebox">
+                                                 {{ area.value }} mm/day
+                                            </div>
+                                       </div>
+                                  </div>
+                             </div>
+
+
+
+
+
+                             <div *ngFor="let area of exposurepercentagevaluenew?.Mahe | keyvalue">
+                                  <div class="exposurepercentageboxrape">
+                                       <div class="percentageboxcolor"
+                                            [ngStyle]="{'background-color': getColorjhbjb(area.key)}">
+                                       </div>
+                                       <div class="percentagebox">
+                                            {{ area.value }}%
+                                       </div>
+                                  </div>
+                             </div>
+
+                        </div>
+                   </div>
+              </div> -->
+
+        </div>
+
+    </div>
+</div>
+
+
+
+<div class="overlay" *ngIf="expandedBoxchangepassword">
+    <div class="expanded-box">
+        <p class="title">Change your password</p>
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmitRegister()">
+            <!-- Old Password Field -->
+            <div class="password-container">
+                <input [type]="showOldPassword ? 'text' : 'password'" class="input" formControlName="oldpassword"
+                    placeholder="Old Password">
+                <button type="button" class="toggle-password" (click)="togglePasswordVisibility('old')">
+                    {{ showOldPassword ? 'Hide' : 'Show' }}
+                </button>
+            </div>
+            <div *ngIf="registerForm.get('oldpassword')?.invalid && registerForm.get('oldpassword')?.touched"
+                class="error">
+                <div *ngIf="registerForm.get('oldpassword')?.errors?.['required']">Old Password is required</div>
+            </div>
+            <i *ngIf="passworderror" style="color: rgb(255, 0, 0);">{{passworderror}}.</i>
+
+
+            <!-- New Password Field -->
+            <div class="password-container">
+                <input [type]="showNewPassword ? 'text' : 'password'" class="input" formControlName="password"
+                    placeholder="New Password">
+                <button type="button" class="toggle-password" (click)="togglePasswordVisibility('new')">
+                    {{ showNewPassword ? 'Hide' : 'Show' }}
+                </button>
+            </div>
+            <div *ngIf="registerPassword?.invalid && registerPassword?.touched" class="error">
+                <div *ngIf="registerPassword?.errors?.['required']">New Password is required</div>
+                <div *ngIf="registerPassword?.errors?.['minlength']">Password must be at least 8 characters long
+                </div>
+            </div>
+
+            <!-- Confirm Password Field -->
+            <div class="password-container">
+                <input [type]="showConfirmPassword ? 'text' : 'password'" class="input"
+                    formControlName="confirmPassword" placeholder="Confirm Password">
+                <button type="button" class="toggle-password" (click)="togglePasswordVisibility('confirm')">
+                    {{ showConfirmPassword ? 'Hide' : 'Show' }}
+                </button>
+            </div>
+            <div *ngIf="registerConfirmPassword?.invalid && registerConfirmPassword?.touched" class="error">
+                <div *ngIf="registerConfirmPassword?.errors?.['required']">Confirm Password is required</div>
+                <div *ngIf="registerConfirmPassword?.errors?.['passwordMismatch']">Passwords do not match</div>
+            </div>
+
+            <!-- Submit Button -->
+            <button class="form-btn" type="submit" [disabled]="registerForm.invalid">Change Password</button>
+
+            <i style="color: rgb(255, 0, 0);">{{resistationerror}}.</i>
+            <h4 style="color: rgb(64, 221, 32); margin: 0;">{{sucessmassege}}</h4>
+        </form>
+
+        <button class="close-button" (click)="shrinkBoxchangepassword()">&#10006;</button>
+    </div>
+</div>
+
+
+
+<!-- <div class="body" *ngIf="lodershow">
+    <div class="loader">
+         <span>C</span><span>R</span><span>A</span><span>T</span>
+    </div>
+</div> -->
+
+<app-loder *ngIf="lodershow"></app-loder>
+
+<div class="notification" *ngIf="notificationpopup">
+    {{notificationtext}}
+</div>
+
+
+
+
+<div *ngIf="isPrintMode" class="print-logs">
+    <p><strong>Type of Hazard:</strong> {{ typeOfHazard }}</p>
+
+    <h3>Hazards</h3>
+    <ul>
+         <li *ngFor="let item of hazard">{{ item }}</li>
+    </ul>
+    <h3>Flood Indicator</h3>
+    <p>{{ floodSlidervaluetoshownonselectedindicator }}</p>
+    <h3>Exposure</h3>
+    <ul>
+         <li *ngFor="let exp of exposure">
+              {{ exp.indicator_name }}
+              <ul *ngIf="exp.sub_indicators.length > 0">
+                   <li *ngFor="let sub of exp.sub_indicators">{{ sub }}</li>
+              </ul>
+         </li>
+    </ul>
+
+    <h3>Vulnerability Adaptive</h3>
+    <ul>
+         <li *ngFor="let adaptive of vulnerabilityAdaptive">{{ adaptive.indicator_name }}</li>
+    </ul>
+
+    <h3>Vulnerability Sensitivity</h3>
+    <ul>
+         <li *ngFor="let sensitivity of vulnerabilitySensitivity">{{ sensitivity.indicator_name }}</li>
+    </ul>
+</div>

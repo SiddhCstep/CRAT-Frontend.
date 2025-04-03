@@ -1,0 +1,481 @@
+header {
+    width: 100%;
+    height: 150px;
+    display: flex;
+}
+
+.diveder {
+    width: 50%;
+    height: 100px;
+    display: flex;
+    align-items: center;
+}
+
+.second {
+    justify-content: right;
+    padding-right: 100px;
+}
+
+
+
+.headeratag {
+    text-decoration-line: none;
+    margin-right: 50px;
+    font-weight: bold;
+    padding: 10px 20px;
+    color: #284b47;
+    cursor: pointer;
+}
+
+.headeratag:hover {
+    background-color: #f3f3f3;
+}
+
+#heading {
+    margin: 0px 0px 0px 100px;
+}
+
+
+.headerimage {
+    width: 100%;
+    height: 450px;
+    background-image: url("../../assets/image/CRAT.webp");
+    background-size: cover;
+    background-position: center;
+    /* Ensure the image is centered */
+    display: flex;
+    align-items: center;
+}
+
+/* Add padding or margin to an inner element if needed */
+.headerimage .inner-content {
+    padding-left: 100px;
+    width: 50%;
+}
+
+
+h1 {
+    font-size: 500%;
+    color: #ffffff;
+}
+
+.cssbuttons-io-button {
+    background: #284b47;
+    color: white;
+    font-family: inherit;
+    padding: 0.35em;
+    padding-left: 1.2em;
+    font-size: 17px;
+    font-weight: 500;
+    border-radius: 0.9em;
+    border: none;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    box-shadow: inset 0 0 1.6em -0.6em #284b47;
+    overflow: hidden;
+    position: relative;
+    height: 2.8em;
+    padding-right: 3.3em;
+    cursor: pointer;
+}
+
+.cssbuttons-io-button .icon {
+    background: white;
+    margin-left: 1em;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.2em;
+    width: 2.2em;
+    border-radius: 0.7em;
+    box-shadow: 0.1em 0.1em 0.6em 0.2em #284b47;
+    right: 0.3em;
+    transition: all 0.3s;
+}
+
+.cssbuttons-io-button:hover .icon {
+    width: calc(100% - 0.6em);
+}
+
+.cssbuttons-io-button .icon svg {
+    width: 1.1em;
+    transition: transform 0.3s;
+    color: #284b47;
+}
+
+.cssbuttons-io-button:hover .icon svg {
+    transform: translateX(0.1em);
+}
+
+.cssbuttons-io-button:active .icon {
+    transform: scale(0.95);
+}
+
+
+.aboutSection {
+    width: 100%;
+    padding-bottom: 100px;
+    display: flex;
+    padding-top: 50px;
+    /* border: 1px solid blue; */
+    flex-direction: column;
+
+}
+
+.aboutData {
+    width: 90%;
+    /* display: flex; */
+}
+
+.aboutdiscription {
+    padding: 50px 0px 0px 100px;
+}
+
+p {
+    text-align: justify;
+}
+
+.aboutimage {
+    margin: 50px 135px 0px 100px;
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+
+/* Footer Styles */
+
+
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 40px 5%;
+    background-color: #f5f5f5;
+    border-top: 1px solid #ddd;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 300px;
+    padding: 0 20px;
+    position: relative;
+}
+
+.footer-section:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 20%;
+    bottom: 20%;
+    border-right: 1px solid #ccc;
+}
+
+.project-title {
+    color: #000000;
+    margin-bottom: 15px;
+    font-size: 1.4em;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li {
+    margin-bottom: 8px;
+}
+
+.footer-links a {
+    color: #34495e;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-links a:hover {
+    color: #223440;
+    text-decoration: underline;
+}
+
+.govt-info p {
+    margin: 8px 0;
+    line-height: 1.4;
+}
+
+.tabicon{
+    width: 10px;
+}
+
+
+.address {
+    margin-top: 15px;
+}
+
+.logo {
+    max-width: 120px;
+    margin: 10px 0;
+}
+
+.company-link {
+    /* text-decoration: underline; */
+    color: #34495e;
+    /* font-weight: 600; */
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+    }
+    
+    .footer-section {
+        padding: 20px 0;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    .footer-section:not(:last-child)::after {
+        display: none;
+    }
+}
+
+
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.expanded-box {
+    background-color: white;
+    padding: 50px 100px;
+    /* width: 700px;
+    height: 500px; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    position: relative;
+    animation: slideUpAnimation 1s ease;
+    animation-fill-mode: both;
+    /* Keeps the final state of the animation */
+    opacity: 0;
+    /* Initially hide the box */
+}
+
+
+@keyframes slideUpAnimation {
+    0% {
+        opacity: 0;
+        /* Start with opacity 0 */
+        transform: translateY(50px);
+        /* Start below its final position */
+    }
+
+    100% {
+        opacity: 1;
+        /* Fully visible */
+        transform: translateY(0);
+        /* Move to its final position */
+    }
+}
+
+.content {
+    font-size: 24px;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 24px;
+}
+
+
+
+.form-container {
+    padding: 20px 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.title {
+    text-align: center;
+    margin: 10px 0;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+form {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.input {
+    width: 100%;
+    border-radius: 20px;
+    border: 1px solid #c0c0c0;
+    outline: 0 !important;
+    box-sizing: border-box;
+    padding: 12px 40px 12px 15px;
+    margin-top: 20px;
+    position: relative;
+}
+
+.page-link {
+    text-decoration: underline;
+    margin: 0;
+    text-align: end;
+    color: #747474;
+    text-decoration-color: #747474;
+}
+
+.page-link-label {
+    cursor: pointer;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.page-link-label:hover {
+    color: #000;
+}
+
+.form-btn {
+    padding: 10px 15px;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    border-radius: 20px;
+    border: 0 !important;
+    outline: 0 !important;
+    background: teal;
+    color: white;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.form-btn:active {
+    box-shadow: none;
+}
+
+.sign-up-label {
+    margin: 0;
+    font-size: 10px;
+    color: #747474;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.sign-up-link {
+    margin-left: 1px;
+    font-size: 11px;
+    text-decoration: underline;
+    text-decoration-color: teal;
+    color: teal;
+    cursor: pointer;
+    font-weight: 800;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.body {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #c0c4cc;
+    margin: 0;
+    opacity: 0.5;
+}
+
+.loader {
+    font-size: 3rem;
+    font-weight: bold;
+    color: rgb(113, 105, 105);
+    display: flex;
+}
+
+.loader span {
+    opacity: 0.2;
+    animation: fade 2s infinite;
+}
+
+.loader span:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.loader span:nth-child(2) {
+    animation-delay: 0.5s;
+}
+
+.loader span:nth-child(3) {
+    animation-delay: 1s;
+}
+
+.loader span:nth-child(4) {
+    animation-delay: 1.5s;
+}
+
+@keyframes fade {
+
+    0%,
+    100% {
+        opacity: 0.2;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+.resisterbutton {
+    margin-top: 20px;
+}
+
+.error {
+    color: red;
+    font-size: 0.875rem;
+    margin-top: 5px;
+}
+
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-container .input {
+    padding-right: 50px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 5px;
+    top: 68%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #c0c0c0;
+    cursor: pointer;
+    font-size: 0.700rem;
+    /* background-color: #284b47; */
+}

@@ -1,0 +1,358 @@
+<header id="welcomepage">
+    <div class="diveder" id="heading">
+        <!-- <img src="../../assets/image/icon.png" alt="" width="50px"> -->
+        <h2>CRAT</h2>
+    </div>
+    <div class="diveder second">
+        <a href="#about" class="headeratag">About CRAT</a>
+        <a (click)="expandBox('login Form')" class="headeratag">Go to CRAT</a> 
+        <a href="#footer" class="headeratag">Contact Us</a>
+    </div>
+</header>
+
+
+
+<div class="headerimage">
+    <div class="inner-content">
+      <h1>
+        Climate Risk Assessment Tool
+      </h1>
+  
+      <!-- routerLink="/home" -->
+  
+      <button class="cssbuttons-io-button" (click)="expandBox('login Form')">
+        Get started
+        <div class="icon">
+          <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"
+              fill="currentColor"></path>
+          </svg>
+        </div>
+      </button>
+    </div>
+  </div>
+  
+
+
+  <div class="overlay" *ngIf="expandedBox">
+    <div class="expanded-box">
+  
+      <div class="form-container" *ngIf="currentState === FormState.LOGIN">
+        <div>
+          <p class="title">Welcome to CRAT</p>
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmitLogin()">
+            <input type="email" class="input" formControlName="email" placeholder="Email">
+            <div *ngIf="loginEmail?.invalid && loginEmail?.touched" class="error">
+              <div *ngIf="loginEmail?.errors?.['required']">Email is required</div>
+              <div *ngIf="loginEmail?.errors?.['email']">Invalid email format</div>
+            </div>
+  
+            <div class="password-container">
+              <input [type]="showLoginPassword ? 'text' : 'password'" class="input" formControlName="password"
+                placeholder="Password">
+              <button type="button" class="toggle-password" (click)="togglePasswordVisibility('login')">
+                {{ showLoginPassword ? 'Hide' : 'Show' }}
+              </button>
+            </div>
+            <div *ngIf="loginPassword?.invalid && loginPassword?.touched" class="error">
+              <div *ngIf="loginPassword?.errors?.['required']">Password is required</div>
+              <div *ngIf="loginPassword?.errors?.['minlength']">Password must be at least 8 characters long</div>
+            </div>
+  
+            <p class="page-link">
+              <a class="page-link-label" (click)="toggleForm(FormState.FORGOT_PASSWORD)">Forgot Password?</a>
+            </p>
+            <button class="form-btn" type="submit" [disabled]="loginForm.invalid">Log in</button>
+          </form>
+          <p class="sign-up-label">
+            Don't have an account? <a class="sign-up-link" (click)="toggleForm(FormState.REGISTER)">Register</a>
+          </p>
+        </div>
+        <div>
+          <i style="color: rgb(255, 0, 0);">{{errormsg}}.</i>
+        </div>
+  
+      </div>
+  
+  
+  
+  
+  
+  
+  
+  
+      <div class="form-container" *ngIf="currentState === FormState.REGISTER">
+        <p class="title">Register</p>
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmitRegister()">
+          <input type="text" class="input" formControlName="fullName" placeholder="Full Name">
+          <div *ngIf="registerFullName?.invalid && registerFullName?.touched" class="error">
+            <div *ngIf="registerFullName?.errors?.['required']">Full Name is required</div>
+          </div>
+  
+          <i *ngIf="nameerror" style="color: rgb(255, 0, 0);">{{nameerror}}.</i>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+          <input type="email" class="input" formControlName="email" placeholder="Email">
+          <div *ngIf="registerEmail?.invalid && registerEmail?.touched" class="error">
+            <div *ngIf="registerEmail?.errors?.['required']">Email is required</div>
+            <div *ngIf="registerEmail?.errors?.['email']">Invalid email format</div>
+          </div>
+  
+          <i *ngIf="emailerror" style="color: rgb(255, 0, 0);">{{emailerror}}.</i>
+  
+  
+  
+  
+  
+  
+          <div class="password-container">
+            <input [type]="showRegisterPassword ? 'text' : 'password'" class="input" formControlName="password"
+              placeholder="Password">
+            <button type="button" class="toggle-password" (click)="togglePasswordVisibility('register')">
+              {{ showRegisterPassword ? 'Hide' : 'Show' }}
+            </button>
+          </div>
+          <div *ngIf="registerPassword?.invalid && registerPassword?.touched" class="error">
+            <div *ngIf="registerPassword?.errors?.['required']">Password is required</div>
+            <div *ngIf="registerPassword?.errors?.['minlength']">Password must be at least 8 characters long</div>
+          </div>
+  
+  
+          <i *ngIf="passworderror" style="color: rgb(255, 0, 0);">{{passworderror}}.</i>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+          <div class="password-container">
+            <input [type]="showRegisterConfirmPassword ? 'text' : 'password'" class="input"
+              formControlName="confirmPassword" placeholder="Confirm Password">
+            <button type="button" class="toggle-password" (click)="togglePasswordVisibility('confirm')">
+              {{ showRegisterConfirmPassword ? 'Hide' : 'Show' }}
+            </button>
+          </div>
+          <div *ngIf="registerConfirmPassword?.invalid && registerConfirmPassword?.touched" class="error">
+            <div *ngIf="registerConfirmPassword?.errors?.['required']">Confirm Password is required</div>
+            <div *ngIf="registerConfirmPassword?.errors?.['passwordMismatch']">Passwords do not match</div>
+          </div>
+  
+          <i *ngIf="re_password" style="color: rgb(255, 0, 0);">{{re_password}}.</i>
+          <br>
+  
+          <button class="form-btn" type="submit" [disabled]="registerForm.invalid">Register</button>
+        </form>
+        <p class="sign-up-label">
+          I have an account <a class="sign-up-link" (click)="toggleForm(FormState.LOGIN)">Log in</a>
+        </p>
+  
+        <i style="color: rgb(255, 0, 0);">{{resistationerror}}.</i>
+        <h4 style="color: rgb(64, 221, 32);">{{sucessmassege}}</h4>
+      </div>
+  
+      <div class="form-container" *ngIf="currentState === FormState.FORGOT_PASSWORD">
+        <p class="title">Forgot Password</p>
+        <form [formGroup]="forgotPasword" (ngSubmit)="onSubmitForgotPassword()">
+          <input type="email" class="input" formControlName="email" placeholder="Email">
+          <div *ngIf="forgotpassword?.invalid && forgotpassword?.touched" class="error">
+            <div *ngIf="forgotpassword?.errors?.['required']">Email is required</div>
+            <div *ngIf="forgotpassword?.errors?.['email']">Invalid email format</div>
+          </div>
+  
+          <i *ngIf="emailerror" style="color: rgb(255, 0, 0);">{{emailerror}}.</i>
+  
+          <p class="page-link">
+            <span class="page-link-label" (click)="toggleForm(FormState.LOGIN)">Login?</span>
+          </p>
+          <button class="form-btn" type="submit" [disabled]="forgotPasword.invalid">Submit</button>
+        </form>
+        <p class="sign-up-label">
+          Don't have an account? <a class="sign-up-link" (click)="toggleForm(FormState.REGISTER)">Register</a>
+        </p>
+        <h4 style="color: rgb(64, 221, 32);">{{sucessmassege}}</h4>
+      </div>
+  
+  
+  
+      <button class="close-button" (click)="shrinkBox()">&#10006;</button>
+    </div>
+  </div>
+
+
+  <div class="aboutSection" id="about">
+    <div class="aboutData">
+      <h2 id="heading">About</h2>
+      <div class="aboutdiscription">
+        <p>
+          The risk of climate change mounts with each passing day. Across the world, and especially in India, extreme climate-change related events are taking lives, depriving livelihoods and reducing the quality of life. Puducherry, a coastal Union Territory of India (U.T) is at acute risk to the effects of climate change. Owing to their close proximity to the ocean, these regions have been increasingly affected by climate change and extreme weather events. With a total coastline of 45 Km, the low-lying areas of Puducherry are particularly susceptible to the effects of sea level rise, storm surges and coastal flooding.  The districts of Puducherry and Karaikal have recently experienced a heightened frequency of natural hazards, including storm surges, tsunamis, and cyclones such as Thane in 2011 and Nivar in 2020, along with the 2004 tsunami, highlighting the urgency of addressing climate-related challenges in Puducherry.
+        </p>
+        <p>
+          In response, the Center for Study of Science, Technology and Policy (CSTEP) with the Puducherry Climate Change Cell (PCCC) has developed the Climate Risk Assessment Tool (CRAT). The purpose of the tool is visualise the climate risk to the agriculture, livestock, water, fishery, health, tourism and urban sectors in the U.T. The tool uses the state of the art of the Intergovernmental Panel on Climate Change (IPCC) Assessment Report 5 (AR5) risk assessment framework to visualise risk as an interaction of hazard, exposure and vulnerability, together known as the determinants of risk.
+        </p>
+  
+        <p>
+          The hazard component determines what the sector is at risk to. CRAT has considered four hazards – drought, heatwave, flood and sea-level rise. 
+        </p>
+  
+        <p>
+          Exposure comprises what or who is at risk. This includes geo-spatial components such as ‘net-sown area’ (Agriculture sector), ‘roads and railways’ (Urban sector), ‘hospitals’ (Health sector) and so on. 
+        </p>
+        <p>
+          Vulnerability assesses the inherent predisposition of people or assets to be affected by climate change. Based on the sector, this can range from ‘Percentage of small and marginal farmers’ (Agriculture sector) to the ‘Percentage of homes in liveable condition’ (Urban sector). 
+        </p>
+        <p>
+          The overall climate risk is computed as a geometric mean of hazard, exposure and vulnerability and is ranked on a three-point scale of low, medium and high. 
+        </p>
+        <p>
+          The tool functions as a dynamic visualisation interface. Users can either choose to visualise the overall climate risk, or individually visualise each determinant of risk, allowing users to create vulnerability, exposure and hazard maps for any sector of their choice. Apart from creating an overall risk map, users will also have the choice of visualizing exposure of different systems or assets by toggling through the ‘Exposure’ section of the tool.
+           <!-- <a href="/popup"><i>readmore</i></a> -->
+        </p>
+        <!-- <i>
+          For more information on the user interface, kindly refer to the user manual. 
+        </i> -->
+      </div>
+    </div>
+   
+  </div>
+  
+
+
+  
+  <!-- <footer id="footer">
+    <div class="footer-left">
+      <h2 class="footer-logo">
+        CRAT
+      </h2>
+      <div class="footer-links">
+        <a href="#about">About CRAT</a>
+        <a (click)="expandBox('login Form')" >Go To CRAT</a>
+        <a href="#contact">Contact Us</a>
+        <a href="#">Terms and Conditions</a>
+        <a href="#">Privacy Policy</a>
+      </div>
+      <div class="footer-info">
+        <p>
+          <strong>Puducherry Climate Change Cell (PCCC)</strong>
+        </p>
+        <p>
+          Government of Puducherry
+        </p>
+        <p>
+          Department of Science, Technology and Environment
+        </p>
+      </div>
+    </div>
+  
+    <div class="footer-right">
+      <h5>
+        Contact Us
+      </h5>
+      <p>
+        <strong>Address:</strong>
+      </p>
+      <p>
+        III Floor, PHB Building, Anna Nagar, Puducherry - 605005,  0413 - 2201256
+      </p>
+      <p>
+        <strong>Email:</strong> pccc.dste&#64;gmail.com
+      </p>
+    </div>
+  </footer> -->
+
+
+
+
+
+  <footer class="footer-container">
+    <div class="footer-section">
+        <h3 class="project-title">CRAT</h3>
+        <ul class="footer-links">
+            <li><a href="#about">About CRAT</a></li>
+            <li><a (click)="expandBox('login Form')">Go To CRAT</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+            <li><a href="#">Terms and Conditions</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+        </ul>
+    </div>
+
+    <div class="footer-section">
+        <div class="govt-info">
+
+          <a href="https://dste.py.gov.in/" target="_blank"  style="text-decoration: none; color: black;">
+            <p class="company-link">Department of Science, Technology and Environment (DSTE) 
+              <img class="tabicon" src="../../assets/image/tabicon.png" alt="">
+            </p>
+            
+          </a>
+        
+         
+          <p class="company-link" >Government of Puducherry</p>
+
+
+          <a href="https://dste.py.gov.in/PCCC/" class="company-link" target="_blank">Puducherry Climate Change Cell (PCCC)
+            <img class="tabicon" src="../../assets/image/tabicon.png" alt="">
+          </a>
+            
+            
+            <div class="address">
+                <p>Address:</p>
+                <p>III Floor, PHB Building, Anna Nagar,</p>
+                <p>Puducherry - 605005</p>
+                <p>0413 - 2201256</p>
+                <p>Email: pccc.dste&#64;gmail.com</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-section">
+        <div class="partner-info">
+            <strong>Partner</strong>
+            <p>Researched & Developed by</p>
+            <img src="../../assets/image/CSTEP new logo png no bg.png" alt="CSTEP Logo" class="logo">
+            <p>
+                <a href="https://cstep.in" class="company-link" target="_blank">
+                   Centre for Study of Science Technology and Policy
+                   
+                </a>
+                <br>
+                <a href="https://cstep.in" class="company-link" target="_blank">
+                  (CSTEP)
+                  <img class="tabicon" src="../../assets/image/tabicon.png" alt="">
+                </a>
+            </p>
+        </div>
+    </div>
+</footer>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<app-loder *ngIf="lodershow" ></app-loder>
